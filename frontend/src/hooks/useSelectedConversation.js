@@ -34,7 +34,7 @@ function mapUserToConversation({ user, messages, authUser, onlineUsers }) {
     peer: {
       name: user.fullName,
       subtitle: user.email,
-      isOnline: onlineUsers.includes(user._id),
+      isOnline: onlineUsers.some((userId) => String(userId) === String(user._id)),
       avatarUrl: user.profilePic,
       initials: getInitials(user.fullName),
     },

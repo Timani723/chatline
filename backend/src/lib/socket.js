@@ -12,7 +12,7 @@ const io = new Server(server, { cors: { origin: [allowedOrigin] } });
 
 
 function getReceiverSocketId(userId) {
-  return userSocketMap[userId];
+  return userSocketMap[String(userId)];
 }
 
 // online users map = { userId: socketId }
@@ -21,14 +21,16 @@ const userSocketMap = {};
 io.on("connection", (socket) => {
   const userId = socket.handshake.query.userId;
 
-  if (userId) userSocketMap[userId] = socket.id;
+  if (userId) userSocketMap[String(userId)] = socket.id;
 
   // io.emit() sends event to everyone - broadcast
   io.emit("getOnlineUsers", Object.keys(userSocketMap));
 
   // socket.on is listening for events
   socket.on("disconnect", () => {
-    if (userId) delete userSocketMap[userId];
+    if (userId && userSocketMap[String(userId)] === socket.id) {
+      delete userSocketMap[String(userId)];
+    }
     io.emit("getOnlineUsers", Object.keys(userSocketMap));
   });
 });

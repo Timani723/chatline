@@ -4,7 +4,14 @@ import { create } from "zustand";
 import { axiosInstance } from "../lib/axios";
 import { io } from "socket.io-client";
 
-const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:3000" : "/";
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL ||
+  (import.meta.env.MODE === "development"
+    ? `http://${window.location.hostname}:3000/api`
+    : "/api");
+const SOCKET_URL =
+  import.meta.env.VITE_SOCKET_URL ||
+  (API_BASE_URL.startsWith("http") ? API_BASE_URL.replace(/\/api\/?$/, "") : undefined);
 
 export const useAuthStore = create((set, get) => ({
   authUser: null,
@@ -36,7 +43,7 @@ export const useAuthStore = create((set, get) => ({
   connectSocket: (user) => {
     if (!user || get().socket?.connected) return;
 
-    const socket = io(BASE_URL, { query: { userId: user._id } });
+    const socket = io(SOCKET_URL, { query: { userId: String(user._id) } });
 
     set({ socket });
 
