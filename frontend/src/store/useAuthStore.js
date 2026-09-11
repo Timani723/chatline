@@ -6,9 +6,7 @@ import { io } from "socket.io-client";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_URL ||
-  (import.meta.env.MODE === "development"
-    ? `http://${window.location.hostname}:3000/api`
-    : "/api");
+  (import.meta.env.MODE === "development" ? "http://localhost:3000/api" : "/api");
 const SOCKET_URL =
   import.meta.env.VITE_SOCKET_URL ||
   (API_BASE_URL.startsWith("http") ? API_BASE_URL.replace(/\/api\/?$/, "") : undefined);
