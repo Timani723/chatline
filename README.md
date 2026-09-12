@@ -130,7 +130,7 @@ chatline/
 │       ├── middleware/   Authentication and upload middleware
 │       ├── models/       MongoDB schemas
 │       ├── routes/       API route definitions
-│       ├── seeds/        Development seed data
+│       ├── seeds/        Demo user data
 │       └── webhooks/     Clerk webhook handlers
 └── Dockerfile            Production container definition
 ```
